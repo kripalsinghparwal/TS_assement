@@ -1,10 +1,15 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>Post a Question</h2>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Post Question</button>
-    </form>
+    {% if user.is_authenticated %}
+        <h2>Post a Question</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Post Question</button>
+        </form>
+    {% else %}
+        <h2>Access Denied</h2>
+        <p>You must <a href="{% url 'login' %}">log in</a> or <a href="{% url 'register' %}">register</a> to post a question.</p>
+    {% endif %}
 {% endblock %}

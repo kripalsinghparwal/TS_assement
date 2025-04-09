@@ -1,16 +1,21 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>All Questions</h2>
-    <a href="{% url 'post_question' %}">Post a New Question</a>
-    <ul>
-        {% for question in questions %}
-            <li>
-                <a href="{% url 'view_question' pk=question.pk %}">{{ question.title }}</a>
-                <p>{{ question.description }}</p>
-            </li>
-        {% empty %}
-            <p>No questions posted yet.</p>
-        {% endfor %}
-    </ul>
+    {% if user.is_authenticated %}
+        <h2>All Questions</h2>
+        <a href="{% url 'post_question' %}">Post a New Question</a>
+        <ul>
+            {% for question in questions %}
+                <li>
+                    <a href="{% url 'view_question' pk=question.pk %}">{{ question.title }}</a>
+                    <p>{{ question.description }}</p>
+                </li>
+            {% empty %}
+                <p>No questions posted yet.</p>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <h2>Welcome to Quora Clone</h2>
+        <p>You must <a href="{% url 'login' %}">log in</a> or <a href="{% url 'register' %}">register</a> to view or interact with questions.</p>
+    {% endif %}
 {% endblock %}

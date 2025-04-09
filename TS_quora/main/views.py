@@ -3,6 +3,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import login, logout, authenticate
 from .models import Question, Answer, Like
 from .forms import QuestionForm, AnswerForm
+from django.contrib.auth.decorators import login_required
+
 
 # Register a new user
 def register(request):
@@ -31,16 +33,19 @@ def user_login(request):
     return render(request, 'login.html', {'form': form})
 
 # Logout user
+@login_required
 def user_logout(request):
     logout(request)
     return redirect('login')
 
 # Home view with all questions
+# @login_required
 def home(request):
     questions = Question.objects.all()
     return render(request, 'home.html', {'questions': questions})
 
 # Post a new question
+@login_required
 def post_question(request):
     if request.method == 'POST':
         form = QuestionForm(request.POST)
@@ -54,6 +59,7 @@ def post_question(request):
     return render(request, 'post_question.html', {'form': form})
 
 # View a question and its answers
+@login_required
 def view_question(request, pk):
     question = Question.objects.get(pk=pk)
     answers = Answer.objects.filter(question=question)
@@ -70,6 +76,7 @@ def view_question(request, pk):
     return render(request, 'view_question.html', {'question': question, 'answers': answers, 'form': form})
 
 # Like an answer
+@login_required
 def like_answer(request, pk):
     answer = Answer.objects.get(pk=pk)
     Like.objects.get_or_create(answer=answer, user=request.user)
