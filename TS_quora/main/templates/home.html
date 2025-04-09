@@ -2,20 +2,25 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <h2>All Questions</h2>
-        <a href="{% url 'post_question' %}">Post a New Question</a>
-        <ul>
-            {% for question in questions %}
-                <li>
-                    <a href="{% url 'view_question' pk=question.pk %}">{{ question.title }}</a>
-                    <p>{{ question.description }}</p>
-                </li>
-            {% empty %}
-                <p>No questions posted yet.</p>
-            {% endfor %}
-        </ul>
+        <h2 style="margin-bottom: 20px;">All Questions</h2>
+
+        <a href="{% url 'post_question' %}" class="button">Post a New Question</a>
+
+        {% if questions %}
+            <div style="margin-top: 30px;">
+                {% for question in questions %}
+                    <div style="background-color: #f9f9f9; padding: 20px; margin-bottom: 15px; border-left: 4px solid #b92b27; border-radius: 8px;">
+                        <h3 style="margin-top: 0;"><a href="{% url 'view_question' pk=question.pk %}" style="text-decoration: none; color: #b92b27;">{{ question.title }}</a></h3>
+                        <p style="margin: 5px 0 0;">{{ question.description }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <p style="margin-top: 20px;">No questions posted yet.</p>
+        {% endif %}
     {% else %}
         <h2>Welcome to Quora Clone</h2>
-        <p>You must <a href="{% url 'login' %}">log in</a> or <a href="{% url 'register' %}">register</a> to view or interact with questions.</p>
+        <p style="margin-top: 15px;">You must <a href="{% url 'login' %}" style="color: #b92b27;">log in</a> or 
+        <a href="{% url 'register' %}" style="color: #b92b27;">register</a> to view or interact with questions.</p>
     {% endif %}
 {% endblock %}

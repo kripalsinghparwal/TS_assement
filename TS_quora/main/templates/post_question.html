@@ -2,14 +2,21 @@
 
 {% block content %}
     {% if user.is_authenticated %}
-        <h2>Post a Question</h2>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Post Question</button>
-        </form>
+        <div style="max-width: 600px; margin: 0 auto;">
+            <h2 style="text-align: center; margin-bottom: 25px;">Post a Question</h2>
+            <form method="post" style="background: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div style="text-align: center; margin-top: 20px;">
+                    <button type="submit">Post Question</button>
+                </div>
+            </form>
+        </div>
     {% else %}
-        <h2>Access Denied</h2>
-        <p>You must <a href="{% url 'login' %}">log in</a> or <a href="{% url 'register' %}">register</a> to post a question.</p>
+        <div style="text-align: center;">
+            <h2>Access Denied</h2>
+            <p>You must <a href="{% url 'login' %}" style="color: #b92b27;">log in</a> or 
+            <a href="{% url 'register' %}" style="color: #b92b27;">register</a> to post a question.</p>
+        </div>
     {% endif %}
 {% endblock %}

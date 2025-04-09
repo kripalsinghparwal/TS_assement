@@ -1,31 +1,45 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h2>{{ question.title }}</h2>
-    <p>{{ question.description }}</p>
+    <div style="max-width: 800px; margin: 0 auto;">
+        <h2 style="color: #b92b27; margin-bottom: 10px;">{{ question.title }}</h2>
+        <p style="font-size: 1.1em; margin-bottom: 30px;">{{ question.description }}</p>
 
-    {% if user.is_authenticated %}
-        <h3>Answers</h3>
-        <ul>
-            {% for answer in answers %}
-                <li>
-                    <p>{{ answer.content }}</p>
-                    <p><strong>Answered by:</strong> {{ answer.user.username }}</p>
-                    <a href="{% url 'like_answer' pk=answer.pk %}">Like</a>
-                    <p>Likes: {{ answer.likes.count }}</p>
-                </li>
-            {% empty %}
+        {% if user.is_authenticated %}
+            <h3 style="margin-top: 40px;">Answers</h3>
+
+            {% if answers %}
+                <ul style="padding-left: 0;">
+                    {% for answer in answers %}
+                        <li style="list-style: none; background: #f9f9f9; margin-bottom: 15px; padding: 15px; border-radius: 8px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);">
+                            <p style="margin: 0 0 10px;">{{ answer.content }}</p>
+                            <p style="font-size: 0.9em; color: #666;"><strong>Answered by:</strong> {{ answer.user.username }}</p>
+                            <div style="margin-top: 8px;">
+                                <a href="{% url 'like_answer' pk=answer.pk %}" class="button" style="padding: 4px 10px; font-size: 0.9em;">Like</a>
+                                <span style="margin-left: 10px;">Likes: {{ answer.likes.count }}</span>
+                            </div>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
                 <p>No answers yet.</p>
-            {% endfor %}
-        </ul>
+            {% endif %}
 
-        <h3>Post an Answer</h3>
-        <form method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <button type="submit">Post Answer</button>
-        </form>
-    {% else %}
-        <p>You must <a href="{% url 'login' %}">log in</a> or <a href="{% url 'register' %}">register</a> to view and post answers.</p>
-    {% endif %}
+            <h3 style="margin-top: 40px;">Post an Answer</h3>
+            <form method="post" style="background: #f9f9f9; padding: 20px; border-radius: 10px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div style="text-align: center; margin-top: 15px;">
+                    <button type="submit">Post Answer</button>
+                </div>
+            </form>
+        {% else %}
+            <div style="text-align: center; margin-top: 30px;">
+                <p>You must 
+                    <a href="{% url 'login' %}" style="color: #b92b27;">log in</a> or 
+                    <a href="{% url 'register' %}" style="color: #b92b27;">register</a> to view and post answers.
+                </p>
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}
